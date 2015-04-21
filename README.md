@@ -10,3 +10,5 @@ Controls:
 You can walk over a chest to open it, then take whatever item is inside with the button in the lower left.  Swap Shops are like chests, except they have 3 possible item choices instead of one.
 
 See how long you can survive!
+
+Play and vote for the game here on the Ludum Dare website: http://ludumdare.com/compo/ludum-dare-32/?action=preview&uid=42929
