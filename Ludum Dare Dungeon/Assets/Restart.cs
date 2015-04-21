@@ -4,6 +4,7 @@ using System.Collections;
 public class Restart : MonoBehaviour
 {
 	public float ticksUntilReset = 60*4;
+	public bool statReset = true;
 
 	void Update()
 	{
@@ -11,8 +12,11 @@ public class Restart : MonoBehaviour
 		if(ticksUntilReset<1)
 		{
 			Application.LoadLevel(1);
-			PlayerMovement.instance.Reset();
-			DifficultyManager.timeRunning=2;
+			if(statReset)
+			{
+				PlayerMovement.instance.Reset();
+				DifficultyManager.timeRunning=2;
+			}
 		}
 	}
 }
