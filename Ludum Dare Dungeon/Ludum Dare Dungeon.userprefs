@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Worldgen.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\RespawnMobs.cs">
     <Files>
-      <File FileName="Assets\Restart.cs" Line="9" Column="3" />
-      <File FileName="Assets\PlayerMovement.cs" Line="411" Column="28" />
-      <File FileName="Assets\RemoveOnDeath.cs" Line="18" Column="29" />
-      <File FileName="Assets\Worldgen.cs" Line="26" Column="30" />
-      <File FileName="Assets\CactusBoss.cs" Line="36" Column="19" />
+      <File FileName="Assets\Restart.cs" Line="17" Column="3" />
+      <File FileName="Assets\PlayerMovement.cs" Line="273" Column="12" />
+      <File FileName="Assets\RemoveOnDeath.cs" Line="1" Column="1" />
+      <File FileName="Assets\Worldgen.cs" Line="1" Column="1" />
+      <File FileName="Assets\CactusBoss.cs" Line="1" Column="1" />
+      <File FileName="Assets\RespawnMobs.cs" Line="9" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

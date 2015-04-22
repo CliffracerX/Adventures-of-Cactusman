@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 			PlayerMovement.maxhealth=5;
 			PlayerMovement.maxsp=3;
 			PlayerMovement.attack=1;
-			PlayerMovement.expGoal=10;
+			PlayerMovement.expGoal=25;
 			PlayerMovement.health=PlayerMovement.maxhealth;
 			PlayerMovement.sp=PlayerMovement.maxsp;
 			PlayerMovement.level=1;
@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
 		ticksUntilRegen-=Time.deltaTime*60;
 		if(ticksUntilRegen<1)
 		{
-			ticksUntilRegen=4*60;
+			ticksUntilRegen=1*60;
 			if(health<(maxhealth+items[selectedItem].maxHealthB))
 			{
 				health+=1;
@@ -254,13 +254,13 @@ public class PlayerMovement : MonoBehaviour
 		if(exp>=expGoal)
 		{
 			exp-=expGoal;
-			expGoal*=2;
 			maxhealth+=5;
 			attack+=1;
 			level+=1;
 			maxsp+=3;
 			sp=maxsp;
 			health=(maxhealth+items[selectedItem].maxHealthB);
+			expGoal=25*level;
 		}
 	}
 
@@ -270,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
 		shopItems = new RandomWep[4];
 		chestItem = new RandomWep[1];
 		exp=0;
-		expGoal=10;
+		expGoal=25;
 		maxhealth=5;
 		attack=1;
 		level=1;

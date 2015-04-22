@@ -25,9 +25,8 @@ public class CactusBoss : MonoBehaviour
 		mob.health=mob.maxhealth;
 	}
 
-	void Update()
+	void DeathFunction()
 	{
-		if(mob.health<1)
 		{
 			Vector3 pos = transform.position;
 			pos.z-=5;

@@ -39,7 +39,7 @@ public class Mob : MonoBehaviour
 		}
 		if(target!=null)
 		{
-			if(Vector3.Distance(transform.position, target.transform.position)>25)
+			if(Vector3.Distance(transform.position, target.transform.position)>50)
 			{
 				transform.position+=new Vector3(Random.Range(-0.125f, 0.125f), 0, Random.Range(-0.125f, 0.125f));
 			}
@@ -71,6 +71,7 @@ public class Mob : MonoBehaviour
 		sr.GetComponent<SpriteRenderer>().sprite=deadSpr;
 		transform.DetachChildren();
 		Destroy(this.gameObject);
+		this.SendMessage("DeathFunction");
 	}
 
 	void OnCollisionEnter(Collision other)
