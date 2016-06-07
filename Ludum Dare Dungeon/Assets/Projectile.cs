@@ -26,7 +26,8 @@ public class Projectile : MonoBehaviour
 				if(other.collider.GetComponent<Mob>().health<1)
 				{
 					int expGained = other.collider.gameObject.GetComponent<Mob>().maxhealth*other.collider.gameObject.GetComponent<Mob>().attack;
-					PlayerMovement.exp+=expGained;
+					float blah = expGained*PlayerMovement.items[PlayerMovement.selectedItem].expBoost;
+					PlayerMovement.exp+=(int)blah;
 				}
 			}
 		}

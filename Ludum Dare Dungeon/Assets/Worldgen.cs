@@ -10,6 +10,11 @@ public class Worldgen : MonoBehaviour
 	public GameObject door;
 	public GameObject shop;
 	public GameObject bossRoom;
+	public GameObject bridgeRoom;
+	public GameObject SPOOOPZ;
+	public GameObject fountainRoom;
+	public GameObject cactusBossRoom;
+	public GameObject brompiBossRoom;
 
 	void Start()
 	{
@@ -31,6 +36,12 @@ public class Worldgen : MonoBehaviour
 						{
 							if(Random.Range (0, 10)==0)
 								Instantiate(rareRoom, new Vector3(8*x*5, 0, 8*y*5), rot);
+							else if(Random.Range (0, 10)==0)
+								Instantiate(bridgeRoom, new Vector3(8*x*5, 0, 8*y*5), rot);
+							else if(Random.Range (0, 400)==0 && DifficultyManager.timeRunning>20)
+								Instantiate(fountainRoom, new Vector3(8*x*5, 0, 8*y*5), rot);
+							else if(Random.Range (0, 4)==0 && DifficultyManager.timeRunning>0)
+								Instantiate(SPOOOPZ, new Vector3(8*x*5, 0, 8*y*5), rot);
 							else
 								Instantiate(defaultRoom, new Vector3(8*x*5, 0, 8*y*5), rot);
 						}
@@ -43,7 +54,15 @@ public class Worldgen : MonoBehaviour
 				Instantiate(shop, new Vector3(8*x3*5, 0, 8*y3*5), rot);
 			}
 		}
-		else
+		else if(DifficultyManager.timeRunning%60==0)
+		{
+			Instantiate(cactusBossRoom, new Vector3(0, 0, 0), Quaternion.identity);
+		}
+		else if(DifficultyManager.timeRunning%60==40)
+		{
+			Instantiate(brompiBossRoom, new Vector3(0, 0, 0), Quaternion.identity);
+		}
+		else if(DifficultyManager.timeRunning%60==20)
 		{
 			Instantiate(bossRoom, new Vector3(0, 0, 0), Quaternion.identity);
 		}

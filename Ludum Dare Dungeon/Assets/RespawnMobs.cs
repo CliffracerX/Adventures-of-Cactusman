@@ -16,9 +16,9 @@ public class RespawnMobs : MonoBehaviour
 			Quaternion rot = Quaternion.identity;
 			GameObject obj = (GameObject)Instantiate(mobToSpawn, pos, rot);
 			Mob m = obj.GetComponent<Mob>();
-			m.maxhealth=((DifficultyManager.difficulty+5)/2)*strength;
+			m.maxhealth=((DifficultyManager.difficulty+5))*strength;
 			m.health=m.maxhealth;
-			m.attack=(((DifficultyManager.difficulty+2)/2)/2)*strength;
+			m.attack=(((DifficultyManager.difficulty+12)/3)/3)*strength;
 		}
 	}
 }

@@ -15,14 +15,24 @@ public class Mob : MonoBehaviour
 	public int projectileChance;
 	public Sprite projectileFireAnim;
 	public float atkF = 0;
+	public int floorMult = 10;
 
 	void Start()
 	{
 		target=GameObject.Find("Player");
+		if(target==null)
+			target=GameObject.Find("Player(Clone)");
+		this.maxhealth*=(DifficultyManager.difficulty/floorMult)+1;
+		this.health=maxhealth;
+		this.attack*=(DifficultyManager.difficulty/floorMult)+1;
 	}
 
 	void Update()
 	{
+		if(this.transform.position.y<=-100)
+		{
+			this.health=-100000;
+		}
 		atkF-=Time.deltaTime*60;
 		if(this.transform.position!=lastPos)
 		{

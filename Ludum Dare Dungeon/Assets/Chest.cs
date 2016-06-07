@@ -9,6 +9,6 @@ public class Chest : MonoBehaviour
 
 	void Start()
 	{
-		item = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0);
+		item = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0, 1);
 	}
 }

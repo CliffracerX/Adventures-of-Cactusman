@@ -10,6 +10,8 @@ public class Radio : MonoBehaviour
 	{
 		int num = (int)DifficultyManager.timeRunning/2;
 		num%=levels.Length;
+		adSrc.enabled=true;
+		adSrc.gameObject.SetActive(true);
 		adSrc.clip=levels[num];
 		adSrc.Play();
 	}

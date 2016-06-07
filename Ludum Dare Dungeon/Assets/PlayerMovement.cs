@@ -10,8 +10,9 @@ public class RandomWep
 	public Sprite sA;
 	public Sprite sB;
 	public int speedB;
+	public float expBoost;
 
-	public RandomWep(string name, int atkB, Sprite sA, Sprite sB, int maxHealthB, int maxSB, int speedB)
+	public RandomWep(string name, int atkB, Sprite sA, Sprite sB, int maxHealthB, int maxSB, int speedB, float xpB)
 	{
 		this.name=name;
 		this.atkB=atkB;
@@ -20,6 +21,7 @@ public class RandomWep
 		this.maxHealthB=maxHealthB;
 		this.maxSB=maxSB;
 		this.speedB=speedB;
+		this.expBoost=xpB;
 	}
 }
 
@@ -57,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
 	public RandomWep[] shopItems = new RandomWep[4];
 	public RandomWep[] chestItem = new RandomWep[1];
 	public static PlayerMovement instance;
+	public static int statPoints = 0;
+	bool usedDoorOnce = false;
 
 	public void GenerateBroomstick(RandomWep[] items, int selectedItem)
 	{
@@ -67,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 		items[selectedItem].maxHealthB=0;
 		items[selectedItem].maxSB=0;
 		items[selectedItem].speedB=0;
+		items[selectedItem].expBoost=1;
 		if(Random.Range(0, 3)==0)
 		{
 			if(Random.Range (0, 2)==0)
@@ -87,6 +92,14 @@ public class PlayerMovement : MonoBehaviour
 				items[selectedItem].speedB=Random.Range(-10, 10);
 			else
 				items[selectedItem].speedB=Random.Range(1, 10);
+		}
+		if(Random.Range(0, 4)==0)
+		{
+			float l2f = (float)level/16f;
+			if(Random.Range (0, 2)==0)
+				items[selectedItem].expBoost=Random.Range(-0.25f, l2f*2);
+			else
+				items[selectedItem].expBoost=Random.Range(1, l2f);
 		}
 	}
 
@@ -99,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 		items[selectedItem].maxHealthB=0;
 		items[selectedItem].maxSB=0;
 		items[selectedItem].speedB=0;
+		items[selectedItem].expBoost=1;
 		if(Random.Range(0, 3)==0)
 		{
 			if(Random.Range (0, 2)==0)
@@ -120,6 +134,14 @@ public class PlayerMovement : MonoBehaviour
 			else
 				items[selectedItem].speedB=Random.Range(1, 10);
 		}
+		if(Random.Range(0, 4)==0)
+		{
+			float l2f = (float)level/16f;
+			if(Random.Range (0, 2)==0)
+				items[selectedItem].expBoost=Random.Range(-0.25f, l2f*2);
+			else
+				items[selectedItem].expBoost=Random.Range(1, l2f);
+		}
 	}
 
 	void Start()
@@ -127,10 +149,10 @@ public class PlayerMovement : MonoBehaviour
 		instance=this;
 		if(PlayerMovement.maxhealth==0)
 		{
-			PlayerMovement.maxhealth=5;
-			PlayerMovement.maxsp=3;
+			PlayerMovement.maxhealth=10;
+			PlayerMovement.maxsp=4;
 			PlayerMovement.attack=1;
-			PlayerMovement.expGoal=25;
+			PlayerMovement.expGoal=10;
 			PlayerMovement.health=PlayerMovement.maxhealth;
 			PlayerMovement.sp=PlayerMovement.maxsp;
 			PlayerMovement.level=1;
@@ -138,11 +160,11 @@ public class PlayerMovement : MonoBehaviour
 		for(int i = 0; i<items.Length; i++)
 		{
 			if(items[i]==null)
-				items[i] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0);
+				items[i] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0, 1);
 		}
 		for(int i = 0; i<shopItems.Length; i++)
 		{
-			shopItems[i] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0);
+			shopItems[i] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0, 1);
 			if(Random.Range(0, 2)==0)
 				this.GenerateSword(shopItems, i);
 			else
@@ -152,8 +174,14 @@ public class PlayerMovement : MonoBehaviour
 
 	void Update()
 	{
+		if(this.transform.position.y<=-100)
+			health=-1000;
 		weaponPartA.GetComponent<SpriteRenderer>().sprite=items[selectedItem].sA;
 		weaponPartB.GetComponent<SpriteRenderer>().sprite=items[selectedItem].sB;
+		if(health>maxhealth+items[selectedItem].maxHealthB)
+			health=maxhealth+items[selectedItem].maxHealthB;
+		if(sp>maxsp+items[selectedItem].maxSB)
+			sp=maxsp+items[selectedItem].maxSB;
 		if(Input.GetKeyUp("1"))
 		{
 			selectedItem=0;
@@ -180,12 +208,16 @@ public class PlayerMovement : MonoBehaviour
 			ticksUntilRegen=1*60;
 			if(health<(maxhealth+items[selectedItem].maxHealthB))
 			{
-				health+=1;
+				health+=1+(level/10);
 			}
 			if(sp<(maxsp+items[selectedItem].maxSB))
 			{
-				sp+=1;
+				sp+=1+(level/10);
 			}
+		}
+		if(Input.GetButtonUp("Regen"))
+		{
+			Application.LoadLevel(1);
 		}
 		if(Input.GetButtonUp("Fire2") && sp>0)
 		{
@@ -254,13 +286,12 @@ public class PlayerMovement : MonoBehaviour
 		if(exp>=expGoal)
 		{
 			exp-=expGoal;
-			maxhealth+=5;
-			attack+=1;
+			//expGoal=(expGoal+(10*(level*level)));
+			expGoal=(int)(expGoal*1.6f);
 			level+=1;
-			maxsp+=3;
+			statPoints+=3;
 			sp=maxsp;
 			health=(maxhealth+items[selectedItem].maxHealthB);
-			expGoal=25*level;
 		}
 	}
 
@@ -270,11 +301,11 @@ public class PlayerMovement : MonoBehaviour
 		shopItems = new RandomWep[4];
 		chestItem = new RandomWep[1];
 		exp=0;
-		expGoal=25;
-		maxhealth=5;
+		expGoal=10;
+		maxhealth=10;
 		attack=1;
 		level=1;
-		maxsp=3;
+		maxsp=4;
 		sp=maxsp;
 		health=maxhealth;
 		selectedItem=0;
@@ -298,6 +329,24 @@ public class PlayerMovement : MonoBehaviour
 		GUI.Label(new Rect(10, 130, 200, 25), "ATK: "+attack);
 		GUI.Label(new Rect(10, 220, 200, 25), "Floor: "+((DifficultyManager.timeRunning/2)));
 		string itemSTR = items[selectedItem].name+", ATK "+items[selectedItem].atkB;
+		if(statPoints>0)
+		{
+			if(GUI.Button(new Rect(220, 10, 25, 25), "+HP"))
+			{
+				statPoints-=1;
+				maxhealth+=10;
+			}
+			if(GUI.Button(new Rect(220, 40, 25, 25), "+SP"))
+			{
+				statPoints-=1;
+				maxsp+=4;
+			}
+			if(GUI.Button(new Rect(150, 130, 25, 25), "+ATK"))
+			{
+				statPoints-=1;
+				attack+=1;
+			}
+		}
 		if(items[selectedItem].maxHealthB!=0)
 		{
 			itemSTR+=", HP "+items[selectedItem].maxHealthB;
@@ -310,8 +359,12 @@ public class PlayerMovement : MonoBehaviour
 		{
 			itemSTR+=", Speed "+items[selectedItem].speedB;
 		}
+		if(items[selectedItem].expBoost!=1)
+		{
+			itemSTR+=", Exp* "+items[selectedItem].expBoost;
+		}
 		GUI.Label(new Rect(10, 160, 400, 50), itemSTR);
-		GUI.Label(new Rect(10, 100, 200, 25), "LVL: "+level);
+		GUI.Label(new Rect(10, 100, 200, 25), "LVL: "+level+", "+statPoints+" Statpoints");
 		GUI.Label(new Rect(10, 190, 200, 25), "Speed: "+(items[selectedItem].speedB+this.speed));
 		GUI.Box(new Rect(10, 40, 200*((float)sp/(float)(maxsp+items[selectedItem].maxSB)), 25), "", SPBarStyle);
 		GUI.Box(new Rect(10, 40, 200, 25), "", SbarBGStyle);
@@ -334,6 +387,10 @@ public class PlayerMovement : MonoBehaviour
 				if(w.speedB!=0)
 				{
 					lootSTR+=", Speed "+w.speedB;
+				}
+				if(w.expBoost!=1)
+				{
+					lootSTR+=", Exp* "+w.expBoost;
 				}
 				if(GUI.Button(new Rect(10, Screen.height-100, 750, 50), "Take "+lootSTR))
 				{
@@ -359,6 +416,10 @@ public class PlayerMovement : MonoBehaviour
 					if(w.speedB!=0)
 					{
 						lootSTR+=", Speed "+w.speedB;
+					}
+					if(w.expBoost!=1)
+					{
+						lootSTR+=", Exp* "+w.expBoost;
 					}
 					if(GUI.Button(new Rect(10, Screen.height-(100*i), 750, 50), "Take "+lootSTR))
 					{
@@ -394,7 +455,8 @@ public class PlayerMovement : MonoBehaviour
 			if(other.collider.gameObject.GetComponent<Mob>().health<1)
 			{
 				int expGained = other.collider.gameObject.GetComponent<Mob>().maxhealth*other.collider.gameObject.GetComponent<Mob>().attack;
-				exp+=expGained;
+				float blah = expGained*items[selectedItem].expBoost;
+				exp+=(int) blah;
 			}
 		}
 	}
@@ -403,9 +465,10 @@ public class PlayerMovement : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.tag=="Respawn")
+		if(other.tag=="Respawn" && !usedDoorOnce)
 		{
-			if(DifficultyManager.timeRunning/2==10)
+			usedDoorOnce=true;
+			if(DifficultyManager.timeRunning==60)
 				Application.LoadLevel(3);
 			else
 				Application.LoadLevel(1);
@@ -415,7 +478,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if(other.GetComponent<Chest>().opened==false)
 			{
-				chestItem[0] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0);
+				chestItem[0] = new RandomWep("Nothing", 0, blankSprite, blankSprite, 0, 0, 0, 1);
 				if(Random.Range(0, 2)==0)
 					this.GenerateSword(chestItem, 0);
 				else
